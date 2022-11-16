@@ -6,14 +6,26 @@
 /*   By: lmedrano <lmedrano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 11:06:28 by lmedrano          #+#    #+#             */
-/*   Updated: 2022/11/14 11:29:02 by lmedrano         ###   ########.fr       */
+/*   Updated: 2022/11/16 16:35:14 by lmedrano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GET_NEXT_LINE_H
-#define GET_NEXT_LINE_H
-#define BUFF_SIZE 42
+# define GET_NEXT_LINE_H
+
+#ifndef BUFFER_SIZE
+# define BUFFER_SIZE 5
+#endif
+
+# include <stdlib.h>
+# include <unistd.h>
+# include <stddef.h>
 
 char	*get_next_line(int fd);
+char	*ft_strchr(char *str, int to_find);
+char	*ft_strjoin(char *s1, char *s2);
+size_t	ft_strlen(char *str);
+char	*ft_before_backslash(char *str);
+char	*ft_after_backslash(char *str);
 
 #endif
