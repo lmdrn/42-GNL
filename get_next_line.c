@@ -6,140 +6,48 @@
 /*   By: lmedrano <lmedrano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 11:06:02 by lmedrano          #+#    #+#             */
-/*   Updated: 2022/11/16 16:36:16 by lmedrano         ###   ########.fr       */
+/*   Updated: 2022/12/05 16:51:39 by lmedrano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-size_t	ft_strlen(char *str)
+// create a cursor var
+// create a buf var
+// create a static var that stores what is currently read
+// create a string var that returns a line cleaned
+// make the cursor equal to buf size (to read correct amount of bytes each time)
+// tant que mon fichier n'est pas fini && que je n'ai pas trouvé de '\n'
+// je dis à mon cursor de lire mon fichier
+// je rajoute ce que j'ai lu à ce qu'il y avait déjà dans ma static
+// je sors de ma boucle et je mets à jour la ligne que je dois retourner en
+// enlevant tout ce qu'il y a APRES le '\n'
+// je mets à jour ma static en enlevant tout ce qu'il y a AVANT le '\n'
+// je retourne ma line cleaned
+// faire la gestion d'erreur : si pas de line ou pas de storage ou buffer <= 0
+// ou cursor = 0 (end of file)
+
+char *get_next_line(int fd)
 {
-	size_t	index;
-
-	index = 0;
-	while (str[index])
-		index++;
-	return (index);
-}
-
-char	*ft_strjoin(char *s1, char *s2)
-{
-	char	*str;
-	int	index;
-	int	jindex;
-
-	index = 0;
-	jindex = 0;
-	str = malloc(sizeof(char *) * ((ft_strlen(s1) + ft_strlen(s2)) + 1));
-	if (str == NULL)
-		return (NULL);
-	while (str[index])
-	{
-		str[index] = s1[index];
-		index++;
-	}
-	while (s2[jindex])
-		str[index++] = s2[jindex++];
-	str[index] = '\0';
-	return (str);
-}
-
-char	*ft_strchr(char *str, int to_find)
-{
-	char		letter;
-	char		*new_str;
-	int		index;
-
-	index = 0;
-	letter = to_find;
-	if (str == NULL)
-		return (NULL);
-	new_str = (char *)str;
-	while (str[index])
-	{	
-		if (new_str[index] == letter)
-			return (&new_str[index]);
-		index++;
-	}
-	if (new_str[index] == letter)
-		return (&new_str[index]);
-	return (0);
-}
-
-char	*ft_before_backslash(char *str)
-{
-	int	index;
-	int	jindex;
-	char	*line;
-
-	index = 0;
-	jindex = 0;
-	while (str[index] && str[index] != '\n')
-		index++;
-	if (!str[index])
-	{
-		free(str);
-		return (NULL);
-	}
-	line = malloc(sizeof(char) * (ft_strlen(str) - index + 1));
-	if (line == NULL)
-		return (NULL);
-	while (str[index])
-		line[jindex++] = str[index++];
-	return (line);
-
-}
-
-char	*ft_after_backslash(char *str)
-{
-	int	index;
-	char	*line;
-
-	index = 0;
-	if (!str[index])
-		return (NULL);
-	while (str[index] && str[index] != '\n')
-		index++;
-	line = malloc(sizeof(char *) * (index + 1));
-	if (line == NULL)
-		return (NULL);
-	while (str[index] && str[index] != '\n')
-	{
-		line[index] = str[index];
-		index++;
-	}
-	if (str[index] == '\n')
-	{
-		line[index] = str[index];
-		index++;
-	}
-	line[index] = '\0';
-	return (line);
-}
-
-char	*get_next_line(int fd)
-{
-	char		buf[BUFFER_SIZE + 1];
 	int		cursor;
-	static char	*str;
-	char		*tmp;
-	
-	cursor = BUFFER_SIZE;
+	char		buf[BUFFER_SIZE + 1];
+	static char	*storage;
+	char		*line;
+
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	while (cursor != 0)
+	cursor = 1;
+	while (cursor != 0 && !ft_strchr(storage, '\n'))
 	{
-		cursor = read (fd, buf, BUFFER_SIZE);
+		cursor = read(fd, buf, BUFFER_SIZE);
 		if (cursor == -1)
 			return (NULL);
 		buf[cursor] = '\0';
-		tmp = str;
-		str = ft_strjoin(tmp, buf);
+		storage = ft_strjoin(storage, buf);
 	}
-	if (str == NULL)
-		return (NULL);
-	tmp = str;
-	tmp = ft_before_backslash(str);
-	str = ft_after_backslash(str);
-	return (str);
+	if (storage == NULL)
+		return (NULL);	
+	line = ft_after_backslash(storage);
+	storage = ft_before_backslash(storage);
+	return (line);
 }
