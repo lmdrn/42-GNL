@@ -6,7 +6,7 @@
 #    By: lmedrano <lmedrano@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/14 11:01:06 by lmedrano          #+#    #+#              #
-#    Updated: 2022/11/14 11:05:36 by lmedrano         ###   ########.fr        #
+#    Updated: 2022/12/07 10:22:17 by lmedrano         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ NAME		= libgnl.a
 
 CC		= cc
 
-CFLAGS		= -Wall -Werror -Wextra
+CFLAGS		= -Wall -Werror -Wextra -D BUFFER_SIZE=5
 
 LIB		= ar rc
 

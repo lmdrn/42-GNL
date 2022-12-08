@@ -3,46 +3,38 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mreymond <mreymond@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmedrano <lmedrano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/07 16:08:08 by mreymond          #+#    #+#             */
-/*   Updated: 2022/12/05 17:11:55 by lmedrano         ###   ########.fr       */
+/*   Created: 2022/12/07 11:04:59 by lmedrano          #+#    #+#             */
+/*   Updated: 2022/12/08 10:41:24 by lmedrano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "get_next_line.h"
 #include "get_next_line.c"
 #include "get_next_line_utils.c"
-#include "get_next_line.h"
 #include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <stddef.h>
-#include <sys/types.h>
 #include <sys/stat.h>
+#include <sys/types.h>
 #include <fcntl.h>
+#include <stdlib.h>
+#include <stddef.h>
+#ifndef BUFFER_SIZE
+# define BUFFER_SIZE 42
+#endif
 
 int main()
 {
-      char *file;
-      int fichier = open(file, O_RDONLY);
-      file = "Hello Dolly";
-//    rintf("%d", fichier);
-    // printf("%s", get_next_line(1));
-	char *str = NULL;
+	int fd = open("test.txt", O_RDONLY);
+	if (fd == -1)
+		return (-1);
+	char *line = NULL;
+	line = get_next_line(fd);
+	printf("%s\n", line);
 
-	str = get_next_line(fichier);
-	printf("%s", str);
-	while (str != 0)
+	while (line != 0)
 	{
-	 str = get_next_line(fichier); 
-     printf("%s", str);
+		line = get_next_line(fd);
+		printf("line res is: %s", line);
 	}
-    // get_next_line(fichier);
-    // get_next_line(fichier);
-    // get_next_line(fichier);
-    // get_next_line(fichier);
-    // get_next_line(fichier);
-    // get_next_line(fichier);
-    // get_next_line(fichier);
-    // get_next_line(fichier);
 }

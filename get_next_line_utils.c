@@ -6,113 +6,125 @@
 /*   By: lmedrano <lmedrano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 11:06:15 by lmedrano          #+#    #+#             */
-/*   Updated: 2022/12/05 16:57:46 by lmedrano         ###   ########.fr       */
+/*   Updated: 2022/12/08 11:24:16 by lmedrano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-// create ft_strlen (check sentence length)
-// create ft_strjoin (join what was currently stashed in previous reading
-// with current reading)
-// create ft_strchr (search for a '\n' in what we've just read)
-// create ft_before (remove what was before '\n' 
-// and transfer it to the line to be returned)
-// create ft_after (remove what was after '\n' and store it in the static var)
 
 int	ft_strlen(char *str)
 {
-	int ind;
+	size_t i;
 
-	ind = 0;
-	while (str[ind] != '\0')
-		ind++;
-	return (ind);
+	i = 0;
+	if (str == NULL)
+		return (0);
+	while (str[i] != '\0')
+		i++;
+	return (i);
 }
 
-char	*ft_strjoin(char *s1, char *s2)
+char	*ft_strjoin(char *s1, char  *s2)
 {
-	int	ind;
-	int	jind;
-	int 	len;
-	char	*new_str;
+	char	*str;
+	size_t	i;
+	size_t	j;
+	size_t	count;
 
-	ind = 0;
-	jind = 0;
-	len = ft_strlen(s1) + ft_strlen(s2);
-	new_str = malloc(sizeof(char *) * (len + 1));
-	if (new_str == NULL)
+	i = 0;
+	j = 0;
+	if (!s1)
+	{
+		s1 = malloc(sizeof(char) * 1);
+		s1[i] = '\0';
+	}
+	if (s1 == NULL || s2 == NULL)
 		return (NULL);
-	while (s1)
+	count = ft_strlen(s1) + ft_strlen(s2);
+	str = malloc(sizeof(char) * count + 1);
+	if (str == NULL)
+		return (NULL);
+	while (s1[i] != '\0')
 	{
-		new_str[ind] = s1[ind];
-		ind++;	
+		str[i] = s1[i];
+		i++;
 	}
-	while (s2)
-	{
-		new_str[ind] = s2[jind];
-		ind++;
-		jind++;
-	}
-	new_str[ind] = '\0';
-	return (new_str);
+	while (s2[j] != '\0')
+		str[i++] = s2[j++];
+	free(s1);
+	str[i] = '\0';
+	return (str);
 }
 
 char	*ft_strchr(char *str, int to_find)
 {
-	int	ind;
+	int	i;
 	char	letter;
 
-	ind = 0;
+	i = 0;
 	letter = to_find;
-
-	while (str[ind] != '\0' && str[ind] != letter)
-		ind++;
-	if (str[ind] == letter)
-		return (&str[ind]);
-	return (0);
-}
-
-char	*ft_before_backslash(char *str)
-{
-	char	*cleaned;
-	int	ind;
-	int	jind;
-
-	ind = 0;
-	jind = 0;
 	if (str == NULL)
 		return (NULL);
-	while (str[ind] != '\0' && str[ind] != '\n')
-		ind++;
-	cleaned = malloc(sizeof(char *) * (ft_strlen(str) - (ind + 1)));
-	if (cleaned == NULL)
-		return (NULL);
-	ind++;
-	while (str[ind] != '\0')
-		cleaned[jind++] = str[ind++];
-	cleaned[jind] = '\0';
-	free(str);
-	return (cleaned);
+	while (str[i] != '\0' && str[i] != letter)
+		i++;
+	if (str[i] == letter)
+		return (&str[i]);
+	return (NULL);
 }
 
-char	*ft_after_backslash(char *str)
-{
-	char	*cleaned;
-	int 	ind;
+// create function that EXTRACTS content in storage
+// before \n + \n and COPIES it into line
 
-	ind = 0;
-	if (str == NULL)
+
+char	*ft_extract(char *storage)
+{
+	char	*extracted;
+	int	i;
+
+	i = 0;
+	while (storage[i] != '\0' && storage[i] != '\n')
+		i++;
+	i++;
+	extracted = malloc(sizeof(char) * i + 1);
+	if (extracted == NULL)
 		return (NULL);
-	while (str[ind] != '\0' && str[ind] != '\n')
-		ind++;
-	cleaned = malloc(sizeof(char *) * (ind + 2));
-	if (cleaned == NULL)
-		return (NULL);
-	if (str[ind] == '\n')
+	i = 0;
+	while (storage[i] != '\0' && storage[i] != '\n')
 	{
-		cleaned[ind] = str[ind];
-		ind++;
+		extracted[i] = storage[i];
+		i++;
 	}
-	cleaned[ind] = '\0';
+	if (storage[i] == '\n')
+		extracted[i] = storage[i];
+	extracted[i] = '\0';
+	return (extracted);
+}
+
+//create function that REMOVES content in storage
+//before \n + \n
+
+char	*ft_clean(char *storage)
+{
+	char	*cleaned;
+	int	i;
+	int	j;
+
+	i = 0;
+	if (storage == NULL)
+	{
+		free(storage);
+		return (NULL);
+	}
+	while (storage[i] != '\0' && storage[i] != '\n')
+		i++;
+	cleaned = malloc(sizeof(char) * ((ft_strlen(storage) - i) + 1));
+	if (cleaned == NULL)
+		return (NULL);
+	i++;
+	j = 0;
+	while (storage[i] != '\0')
+		cleaned[j++] = storage[i++];
+	cleaned[j] = '\0';
+	free(storage);
 	return (cleaned);
 }
