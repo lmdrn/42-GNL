@@ -6,7 +6,7 @@
 /*   By: lmedrano <lmedrano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 11:06:02 by lmedrano          #+#    #+#             */
-/*   Updated: 2022/12/12 17:00:44 by lmedrano         ###   ########.fr       */
+/*   Updated: 2022/12/12 17:22:18 by lmedrano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ char	*ft_read(int fd, char *storage)
 	if (storage == NULL)
 		return (NULL);
 	cursor = 1;
-	while (cursor != 0 && ft_strchr(storage) != '\n')
+	while (cursor != 0)
 	{
 		cursor = read(fd, buf, BUFFER_SIZE);
 //		printf("I have read : %s", buf);
@@ -64,6 +64,8 @@ char	*ft_read(int fd, char *storage)
 		storage = ft_strjoin(storage, buf);
 //		printf("I have stored : %s", storage);
 //		printf("\n");
+		if (ft_strchr(storage, '\n'))
+			break ;
 	}
 	if (storage == NULL)
 		return (NULL);

@@ -6,7 +6,7 @@
 /*   By: lmedrano <lmedrano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 11:06:15 by lmedrano          #+#    #+#             */
-/*   Updated: 2022/12/12 17:04:35 by lmedrano         ###   ########.fr       */
+/*   Updated: 2022/12/12 17:23:12 by lmedrano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,20 +73,18 @@ char	*ft_strjoin(char *storage, char *buf)
 	return (str);
 }
 
-int	ft_strchr(char *storage)
+char	*ft_strchr(char *storage, int backslash)
 {
 	int	i;
 
 	i = 0;
 	if (storage == NULL)
-		return (-1);
-	while (storage[i] != '\0')
-	{
-		if (storage[i] == '\n')
-			return (i);
+		return (NULL);
+	while ((storage[i] != '\0') && (storage[i] != (char)backslash))
 		i++;
-	}
-	return (-1);
+	if (storage[i] == (char)backslash)
+		return (&((char *)storage)[i]);
+	return (0);
 }
 
 // create function that EXTRACTS content in storage
