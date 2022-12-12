@@ -6,15 +6,35 @@
 /*   By: lmedrano <lmedrano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 11:06:15 by lmedrano          #+#    #+#             */
-/*   Updated: 2022/12/08 17:11:39 by lmedrano         ###   ########.fr       */
+/*   Updated: 2022/12/12 17:04:35 by lmedrano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
+void	*ft_calloc(size_t count, size_t size)
+{
+	char	*memory;
+	size_t	i;
+	size_t	len;
+
+	i = 0;
+	len = count * size;
+	memory = malloc(len);
+	if (!memory)
+		return (NULL);
+	while (i < len)
+	{
+		memory[i] = 0;
+		i++;
+	}
+	return (memory);
+}
+
+
 int	ft_strlen(char *str)
 {
-	size_t i;
+	size_t	i;
 
 	i = 0;
 	if (str == NULL)
@@ -24,7 +44,7 @@ int	ft_strlen(char *str)
 	return (i);
 }
 
-char	*ft_strjoin(char *storage, char  *buf)
+char	*ft_strjoin(char *storage, char *buf)
 {
 	char	*str;
 	size_t	i;
@@ -33,13 +53,12 @@ char	*ft_strjoin(char *storage, char  *buf)
 
 	i = 0;
 	j = 0;
-	printf("start join\n");
 	if (storage == NULL || buf == NULL)
 		return (NULL);
 	count = ft_strlen(storage) + ft_strlen(buf);
-	printf("count value : %zu\n", count);
-	str = malloc(sizeof(char) * count + 1);
-	printf("str value : %s\n", str);
+	//printf("storage length is : %d\n", ft_strlen(storage));
+	//printf("buf length is : %d\n", ft_strlen(buf));
+	str = ft_calloc(count, sizeof(str));
 	if (str == NULL)
 		return (NULL);
 	while (storage[i] != '\0')
@@ -47,34 +66,31 @@ char	*ft_strjoin(char *storage, char  *buf)
 		str[i] = storage[i];
 		i++;
 	}
-	printf("str value after storage: %s\n", str);
 	while (buf[j] != '\0')
 		str[i++] = buf[j++];
-	printf("str value after buf: %s\n", str);
+	free(storage);
 	str[i] = '\0';
-	printf("end join\n");
 	return (str);
 }
 
-char	*ft_strchr(char *storage, int backslash)
+int	ft_strchr(char *storage)
 {
 	int	i;
-	char	letter;
 
- 	i = 0;
-	letter = backslash;
-	printf("start search\n");
-	while (storage[i] != '\0' && storage[i] != letter)
+	i = 0;
+	if (storage == NULL)
+		return (-1);
+	while (storage[i] != '\0')
+	{
+		if (storage[i] == '\n')
+			return (i);
 		i++;
-	if (storage[i] == letter)
-		return (&storage[i]);
-	printf("end search\n");
-	return (NULL);
+	}
+	return (-1);
 }
 
 // create function that EXTRACTS content in storage
 // before \n + \n and COPIES it into line
-
 
 char	*ft_extract(char *storage)
 {
@@ -82,11 +98,15 @@ char	*ft_extract(char *storage)
 	int	i;
 
 	i = 0;
-	printf("start extract\n");
+	if (!*storage)
+	{
+		free(storage);
+		return (NULL);
+	}
 	while (storage[i] != '\0' && storage[i] != '\n')
 		i++;
-	extracted = malloc(sizeof(char) * i + 1);
-	printf("extracted value 1 : %s\n", extracted);
+	i++;
+	extracted = ft_calloc(i, sizeof(extracted));
 	if (extracted == NULL)
 		return (NULL);
 	i = 0;
@@ -100,9 +120,7 @@ char	*ft_extract(char *storage)
 		extracted[i] = storage[i];
 		i++;
 	}
-	printf("extracted value 2: %s\n", extracted);
 	extracted[i] = '\0';
-	printf("end extract\n");
 	return (extracted);
 }
 
@@ -116,25 +134,21 @@ char	*ft_clean(char *storage)
 	int	j;
 
 	i = 0;
-	printf("start clean\n");
-	if (storage == NULL)
+	if (!*storage)
 	{
 		free(storage);
 		return (NULL);
 	}
 	while (storage[i] != '\0' && storage[i] != '\n')
 		i++;
-	cleaned = malloc(sizeof(char) * ((ft_strlen(storage) - i) + 1));
-	printf("cleaned value : %s\n", cleaned);
+	cleaned = ft_calloc((ft_strlen(storage) - i), sizeof(cleaned));
 	if (cleaned == NULL)
 		return (NULL);
 	i++;
 	j = 0;
 	while (storage[i] != '\0')
 		cleaned[j++] = storage[i++];
-	printf("cleaned value : %s\n", cleaned);
 	cleaned[j] = '\0';
 	free(storage);
-	printf("end clean\n");
 	return (cleaned);
 }

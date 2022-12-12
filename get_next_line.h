@@ -6,7 +6,7 @@
 /*   By: lmedrano <lmedrano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 11:06:28 by lmedrano          #+#    #+#             */
-/*   Updated: 2022/12/07 16:28:33 by lmedrano         ###   ########.fr       */
+/*   Updated: 2022/12/12 15:07:14 by lmedrano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,11 @@
 # include <stdio.h>
 
 char	*get_next_line(int fd);
-char	*ft_strchr(char *str, int to_find);
-char	*ft_strjoin(char *s1, char *s2);
+char	*ft_read(int fd, char *storage);
+int	ft_strchr(char *storage);
+char	*ft_strjoin(char *storage, char *buf);
 int	ft_strlen(char *str);
+void	*ft_calloc(size_t count, size_t size);
 char	*ft_extract(char *storage);
 char	*ft_clean(char *storage);
 
