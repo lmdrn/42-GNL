@@ -6,7 +6,7 @@
 /*   By: lmedrano <lmedrano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 11:06:15 by lmedrano          #+#    #+#             */
-/*   Updated: 2022/12/12 17:23:12 by lmedrano         ###   ########.fr       */
+/*   Updated: 2022/12/14 10:48:12 by lmedrano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,6 @@ char	*ft_strjoin(char *storage, char *buf)
 	if (storage == NULL || buf == NULL)
 		return (NULL);
 	count = ft_strlen(storage) + ft_strlen(buf);
-	//printf("storage length is : %d\n", ft_strlen(storage));
-	//printf("buf length is : %d\n", ft_strlen(buf));
 	str = ft_calloc(count, sizeof(str));
 	if (str == NULL)
 		return (NULL);
