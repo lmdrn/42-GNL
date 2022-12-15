@@ -6,7 +6,7 @@
 /*   By: lmedrano <lmedrano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 11:06:15 by lmedrano          #+#    #+#             */
-/*   Updated: 2022/12/14 10:48:12 by lmedrano         ###   ########.fr       */
+/*   Updated: 2022/12/15 10:18:13 by lmedrano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,8 @@ char	*ft_strjoin(char *storage, char *buf)
 
 	i = 0;
 	j = 0;
+	if (!storage)
+		storage = ft_calloc(1, sizeof(storage));
 	if (storage == NULL || buf == NULL)
 		return (NULL);
 	count = ft_strlen(storage) + ft_strlen(buf);

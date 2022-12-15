@@ -6,7 +6,7 @@
 /*   By: lmedrano <lmedrano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 11:06:02 by lmedrano          #+#    #+#             */
-/*   Updated: 2022/12/14 10:45:40 by lmedrano         ###   ########.fr       */
+/*   Updated: 2022/12/15 10:49:18 by lmedrano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,15 +35,15 @@ char	*ft_read(int fd, char *storage)
 	int	cursor;
 	char	buf[BUFFER_SIZE + 1];
 
-	if (!storage)
-		storage = ft_calloc(1, sizeof(storage));
-	if (storage == NULL)
-		return (NULL);
+	//if (storage == NULL)
+	//	return (NULL);
 	cursor = 1;
 	while (cursor != 0)
 	{
 		cursor = read(fd, buf, BUFFER_SIZE);
-		if (cursor == -1)
+		if (cursor == 0)
+			break ;
+		else if (cursor == -1)
 		{
 			free(storage);
 			return (NULL);
