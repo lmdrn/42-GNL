@@ -24,19 +24,15 @@ char	*get_next_line(int fd)
 	if (storage == NULL)
 		return (NULL);
 	line = ft_extract(storage);
-	if (!line)
-		return (NULL);
 	storage = ft_clean(storage);
 	return (line);
 }
 
 char	*ft_read(int fd, char *storage)
 {
-	int	cursor;
+	int		cursor;
 	char	buf[BUFFER_SIZE + 1];
 
-	//if (storage == NULL)
-	//	return (NULL);
 	cursor = 1;
 	while (cursor != 0)
 	{
@@ -54,4 +50,68 @@ char	*ft_read(int fd, char *storage)
 			break ;
 	}
 	return (storage);
+}
+
+// create function that EXTRACTS content in storage
+// before \n + \n and COPIES it into line
+
+char	*ft_extract(char *storage)
+{
+	char	*extracted;
+	int		i;
+
+	i = 0;
+	if (!storage[i])
+		return (NULL);
+	while (storage[i] != '\0' && storage[i] != '\n')
+		i++;
+	i++;
+	extracted = malloc(sizeof(char) * i + 1);
+	if (extracted == NULL)
+		return (NULL);
+	i = 0;
+	while (storage[i] != '\0' && storage[i] != '\n')
+	{
+		extracted[i] = storage[i];
+		i++;
+	}
+	if (storage[i] == '\n')
+	{	
+		extracted[i] = storage[i];
+		i++;
+	}
+	extracted[i] = '\0';
+	return (extracted);
+}
+
+//create function that REMOVES content in storage
+//before \n + \n
+
+char	*ft_clean(char *storage)
+{
+	char	*cleaned;
+	int		i;
+	int		j;
+
+	i = 0;
+	while (storage[i] != '\0' && storage[i] != '\n')
+		i++;
+	if (!storage[i])
+		return (ft_free_storage(storage));
+	cleaned = malloc(sizeof(char) * ft_strlen(storage) - i + 1);
+	if (cleaned == NULL)
+		return (NULL);
+	i++;
+	j = 0;
+	while (storage[i] != '\0')
+		cleaned[j++] = storage[i++];
+	cleaned[j] = '\0';
+	free(storage);
+	return (cleaned);
+}
+
+char	*ft_free_storage(char *storage)
+{
+	free(storage);
+	return (NULL);
 }

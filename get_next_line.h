@@ -13,9 +13,9 @@
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
 
-#ifndef BUFFER_SIZE
-# define BUFFER_SIZE 5
-#endif
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 5
+# endif
 
 # include <stdlib.h>
 # include <unistd.h>
@@ -26,9 +26,10 @@ char	*get_next_line(int fd);
 char	*ft_read(int fd, char *storage);
 char	*ft_strchr(char *storage, int backslash);
 char	*ft_strjoin(char *storage, char *buf);
-int	ft_strlen(char *str);
+size_t	ft_strlen(char *str);
 void	*ft_calloc(size_t count, size_t size);
 char	*ft_extract(char *storage);
 char	*ft_clean(char *storage);
+char	*ft_free_storage(char *storage);
 
 #endif
